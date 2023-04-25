@@ -24,7 +24,7 @@ class V3Spec extends munit.FunSuite {
     id       = OrderId("3333"),
     ticker   = "",
     quantity = -2,
-    expiry   = None,
+    expiry   = Some(LocalDate.of(2022, 1, 1)),
   )
 
 
@@ -44,8 +44,9 @@ class V3Spec extends munit.FunSuite {
     val result = validateOrder(createOrder3, LocalDate.of(2023,4,24))
 
     assertEquals(result, Left(OrderErrors(Map(
-      FieldId.ticker   -> List("cannot be empty"),
       FieldId.quantity -> List("must be positive"),
+      FieldId.expiry   -> List("must be between 2023-04-24 and 2023-05-24"),
+      FieldId.ticker   -> List("cannot be empty"),
     ))))
   }
 
@@ -57,8 +58,9 @@ class V3Spec extends munit.FunSuite {
         FieldId.quantity -> List("must be positive"),
       )),
       createOrder3.id -> OrderErrors(Map(
-        FieldId.ticker   -> List("cannot be empty"),
         FieldId.quantity -> List("must be positive"),
+        FieldId.expiry   -> List("must be between 2023-04-24 and 2023-05-24"),
+        FieldId.ticker   -> List("cannot be empty"),
       )),
     ))))
   }

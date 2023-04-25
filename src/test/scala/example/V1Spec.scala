@@ -34,13 +34,13 @@ class V1Spec extends munit.FunSuite {
     assertEquals(result, Left("Quantity must be positive"))
   }
 
-  test("two errors") {
+  test("multiple errors") {
     val result = validateOrder(
       CreateOrderRequest(
         id       = OrderId("1234"),
         ticker   = "",
         quantity = -2,
-        expiry   = None,
+        expiry   = Some(LocalDate.of(2022, 1, 1)),
       ),
       LocalDate.of(2023,4,24),
     )
