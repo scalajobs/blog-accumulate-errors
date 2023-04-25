@@ -7,8 +7,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "accumulate-errors",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats"  % "2.9.0",
-      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.typelevel" %% "cats-core" % "2.9.0",
+      "org.scalameta" %% "munit"     % "0.7.29" % Test,
     )
   )
 
