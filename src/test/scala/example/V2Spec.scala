@@ -31,7 +31,7 @@ class V2Spec extends munit.FunSuite {
       LocalDate.of(2023,4,24),
     )
 
-    assertEquals(result, Left(List("Quantity must be positive")))
+    assertEquals(result, Left("Quantity must be positive"))
   }
 
   test("multiple errors") {
@@ -45,11 +45,9 @@ class V2Spec extends munit.FunSuite {
       LocalDate.of(2023,4,24),
     )
 
-    assertEquals(result, Left(List(
-      "Ticker cannot be empty",
-      "Quantity must be positive",
-      "Expiry must be between 2023-04-24 and 2023-05-24",
-    )))
+    assertEquals(result, Left(
+      "Ticker cannot be emptyQuantity must be positiveExpiry must be between 2023-04-24 and 2023-05-24"
+    ))
   }
 
 }
