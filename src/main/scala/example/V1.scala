@@ -2,6 +2,7 @@ package example
 
 import java.time.LocalDate
 
+// Fail early
 object V1 {
 
   def validateTicker(ticker: String): Either[String, String] =

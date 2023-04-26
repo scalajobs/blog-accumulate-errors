@@ -4,6 +4,7 @@ import cats.implicits.*
 
 import java.time.LocalDate
 
+// Accumulate errors in a String
 object V2 {
 
   def validateTicker(ticker: String): Either[String, String] =
