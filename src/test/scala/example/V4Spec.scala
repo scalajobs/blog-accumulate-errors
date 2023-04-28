@@ -50,8 +50,19 @@ class V4Spec extends munit.FunSuite {
     )))
   }
 
-  test("multiple orders") {
-    val result = validateOrders(List(createOrder1, createOrder2, createOrder3), LocalDate.of(2023,4,24))
+  test("multiple orders V1") {
+    val result = validateOrdersV1(List(createOrder1, createOrder2, createOrder3), LocalDate.of(2023,4,24))
+
+    assertEquals(result, Left(Map(
+        FieldId.quantity -> List("must be positive","must be positive"),
+        FieldId.expiry   -> List("must be between 2023-04-24 and 2023-05-24"),
+        FieldId.ticker   -> List("cannot be empty"),
+      ),
+    ))
+  }
+
+  test("multiple orders V2") {
+    val result = validateOrdersV2(List(createOrder1, createOrder2, createOrder3), LocalDate.of(2023,4,24))
 
     assertEquals(result, Left(Map(
       createOrder2.id -> Map(

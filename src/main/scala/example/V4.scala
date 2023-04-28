@@ -48,11 +48,15 @@ object V4 {
       (ticker, quantity, expiry) => Order(request.id, ticker, quantity, expiry)
     )
 
-  def validateOrders(requests: List[CreateOrderRequest], today: LocalDate): Either[MultipleOrderErrorsV1, List[Order]] =
+  def validateOrdersV1(requests: List[CreateOrderRequest], today: LocalDate): Either[OrderErrorsV1, List[Order]] =
+    requests
+      .parTraverse(request => validateOrder(request, today))
+
+  def validateOrdersV2(requests: List[CreateOrderRequest], today: LocalDate): Either[MultipleOrderErrorsV1, List[Order]] =
     requests
       .parTraverse(request =>
         validateOrder(request, today)
           .leftMap(orderError => Map(request.id -> orderError))
-      )
+      )  
 
 }
