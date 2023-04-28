@@ -1,5 +1,6 @@
 package example
 
+import cats.Semigroup
 import example.V5.*
 
 import java.time.LocalDate
@@ -37,32 +38,32 @@ class V5Spec extends munit.FunSuite {
   test("one error") {
     val result = validateOrder(createOrder2, LocalDate.of(2023,4,24))
 
-    assertEquals(result, Left(OrderErrorsV2.single(FieldId.quantity, "must be positive")))
+    assertEquals(result, Left(OrderErrorsV2("quantity" -> List("must be positive"))))
   }
 
   test("two errors") {
     val result = validateOrder(createOrder3, LocalDate.of(2023,4,24))
 
-    assertEquals(result, Left(OrderErrorsV2(Map(
-      FieldId.quantity -> List("must be positive"),
-      FieldId.expiry   -> List("must be between 2023-04-24 and 2023-05-24"),
-      FieldId.ticker   -> List("cannot be empty"),
-    ))))
+    assertEquals(result, Left(OrderErrorsV2(
+      "quantity" -> List("must be positive"),
+      "expiry"   -> List("must be between 2023-04-24 and 2023-05-24"),
+      "ticker"   -> List("cannot be empty"),
+    )))
   }
 
   test("multiple orders") {
     val result = validateOrders(List(createOrder1, createOrder2, createOrder3), LocalDate.of(2023,4,24))
 
-    assertEquals(result, Left(MultipleOrderErrorsV2(Map(
-      createOrder2.id -> OrderErrorsV2(Map(
-        FieldId.quantity -> List("must be positive"),
-      )),
-      createOrder3.id -> OrderErrorsV2(Map(
-        FieldId.quantity -> List("must be positive"),
-        FieldId.expiry   -> List("must be between 2023-04-24 and 2023-05-24"),
-        FieldId.ticker   -> List("cannot be empty"),
-      )),
-    ))))
+    assertEquals(result, Left(MultipleOrderErrorsV2(
+      createOrder2.id -> OrderErrorsV2(
+        "quantity" -> List("must be positive"),
+      ),
+      createOrder3.id -> OrderErrorsV2(
+        "quantity" -> List("must be positive"),
+        "expiry"   -> List("must be between 2023-04-24 and 2023-05-24"),
+        "ticker"   -> List("cannot be empty"),
+      ),
+    )))
   }
 
 }
